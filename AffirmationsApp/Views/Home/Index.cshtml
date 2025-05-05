@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+	var affirmations = new List<string>
+	{
+		"Minden nap egyre jobban érzem magam.",
+		"Képes vagyok bármire, amire csak vágyom.",
+		"Megérdemlem a boldogságot és a sikert.",
+		"Büszke vagyok arra, aki vagyok.",
+		"Minden kihívás egy új lehetőség számomra."
+	};
+	var message = "Hálás vagyok, hogy itt vagy. Nézz körbe, találd meg a téged hívó megerősítéseket, és tedd őket a sajátodévá. Ha pedig nem találsz ilyet, akkor írj egyet! :)";
+	var message2 = "Ha nem tudod mivel indulj, ajánlom figyelmedbe ezt a pár erőteljes megerősítést:";
+	var isLoggedIn = User.Identity.IsAuthenticated;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Üdvözöllek</h1>
+	<p>@message</p>
+	<p>@message2</p>
+	<ul>
+		@foreach (var affirmation in affirmations)
+		{
+			<li>@affirmation</li>
+		}
+	</ul>
+    
+
+	@if (isLoggedIn)
+	{
+		<p>Bejelentkezve mint: @User.Identity.Name</p>
+	}
+	else
+	{
+		<p>Az app használatához kérlek jelentkezz be:</p>
+		<p>Ide jöhet a login</p>
+	}
+
+	<p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
