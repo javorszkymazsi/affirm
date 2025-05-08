@@ -5,10 +5,10 @@
 
 <div class="text-center">
 	@* These texts will come from the database later on. *@
-	<h1 class="display-4 text-secondary pb-3">De jó, hogy itt vagy!&#129655;</h1>
+	<h1 class="display-4 text-secondary pb-3">De jó, hogy itt vagy!</h1>
 	<p class="text-secondary-emphasis">Nézz körbe! Találd meg a téged hívó megerősítéseket, és tedd őket a sajátodévá.<br>Vedd fel őket a SAJÁT HANGODON, vagy írj újat! Olyat, amire épp NEKED szükséged van.</p>
-	<h4 class="text-secondary-emphasis pt-3">Mai megerősítés</h4>
-	<h2 class="text-primary">A szívem tele van szeretettel.</h2>    
+	<h4 class="text-secondary-emphasis pt-3">Mai megerősítés:</h4>
+	<h2 class="text-primary">A szívem tele van szeretettel.</h2>  @* Ez majd fix lesz minden napra. *@   
 
 	@if (isLoggedIn)
 	{
@@ -16,7 +16,7 @@
 	}
 	else
 	{
-		<p>Az app használatához kérlek jelentkezz be:</p>
-		<p>Ide jöhet a login</p>
+		<p class="text-secondary-emphasis pt-3">Az app használatához kérlek jelentkezz be:</p>
+		<p class="text-secondary-emphasis">[Ide jöhet a login]</p>
 	}
 </div>
