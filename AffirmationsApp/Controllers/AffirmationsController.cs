@@ -7,16 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AffirmationsApp.Data;
 using AffirmationsApp.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace AffirmationsApp.Controllers
 {
+    [Authorize]
     public class AffirmationsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
         public AffirmationsController(ApplicationDbContext context)
+        private readonly UserManager<IdentityUser> _userManager;
+
+        public AffirmationsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Affirmations
