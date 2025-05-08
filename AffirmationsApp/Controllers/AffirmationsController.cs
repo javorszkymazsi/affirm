@@ -17,7 +17,6 @@ namespace AffirmationsApp.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public AffirmationsController(ApplicationDbContext context)
         private readonly UserManager<IdentityUser> _userManager;
 
         public AffirmationsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
@@ -35,15 +34,15 @@ namespace AffirmationsApp.Controllers
         // GET: Affirmations/UserAffirmations
         public async Task<IActionResult> UserAffirmations()
         {
-            //var affirmation = new Affirmation
-            //{
-            //    Id = 1,
-            //    User = User.Identity.Name,
-            //    Text = "I am successful."
-            //};
-            //return View(affirmation);
+            var userId = _userManager.GetUserId(User); // Get the logged-in user's ID
+            var userName = _userManager.GetUserName(User); // Get the logged-in user's username
 
-            return Content("Hali");
+            // Fetch affirmations for the current user
+            var affirmations = await _context.Affirmation
+                .Where(a => a.User == userId)
+                .ToListAsync();
+
+            return View(affirmations);
         }
 
         // GET: Affirmations/Details/5
