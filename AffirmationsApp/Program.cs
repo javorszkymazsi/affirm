@@ -1,3 +1,4 @@
+using AffirmationsApp.Areas.Identity.Data;
 using AffirmationsApp.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -8,10 +9,13 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+var AffirmatioonsAppContextConnectionString = builder.Configuration.GetConnectionString("AffirmationsAppContextConnection") ?? throw new InvalidOperationException("Connection string 'AffirmationsAppContextConnection' not found.");
+builder.Services.AddDbContext<AffirmationsAppContext>(options =>
+    options.UseSqlServer(AffirmatioonsAppContextConnectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddDefaultIdentity<AffirmationsAppUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<AffirmationsAppContext>();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {

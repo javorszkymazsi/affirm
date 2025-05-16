@@ -15,20 +15,22 @@ namespace AffirmationsApp.Controllers
     [Authorize]
     public class AffirmationsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _appDb;
+        private readonly AffirmationsAppContext _identityDb;
 
         private readonly UserManager<IdentityUser> _userManager;
 
-        public AffirmationsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public AffirmationsController(ApplicationDbContext appContext, AffirmationsAppContext identityDb, UserManager<IdentityUser> userManager)
         {
-            _context = context;
+            _appDb = appContext;
+            _identityDb = identityDb;
             _userManager = userManager;
         }
 
         // GET: Affirmations
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Affirmation.ToListAsync());
+            return View(await _appDb.Affirmation.ToListAsync());
         }
 
         // GET: Affirmations/UserAffirmations
@@ -38,7 +40,7 @@ namespace AffirmationsApp.Controllers
             var userName = _userManager.GetUserName(User); // Get the logged-in user's username
 
             // Fetch affirmations for the current user
-            var affirmations = await _context.Affirmation
+            var affirmations = await _appDb.Affirmation
                 .Where(a => a.User == userId)
                 .ToListAsync();
 
@@ -53,7 +55,7 @@ namespace AffirmationsApp.Controllers
                 return NotFound();
             }
 
-            var affirmation = await _context.Affirmation
+            var affirmation = await _appDb.Affirmation
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (affirmation == null)
             {
@@ -78,8 +80,8 @@ namespace AffirmationsApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(affirmation);
-                await _context.SaveChangesAsync();
+                _appDb.Add(affirmation);
+                await _appDb.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(affirmation);
@@ -93,7 +95,7 @@ namespace AffirmationsApp.Controllers
                 return NotFound();
             }
 
-            var affirmation = await _context.Affirmation.FindAsync(id);
+            var affirmation = await _appDb.Affirmation.FindAsync(id);
             if (affirmation == null)
             {
                 return NotFound();
@@ -117,8 +119,8 @@ namespace AffirmationsApp.Controllers
             {
                 try
                 {
-                    _context.Update(affirmation);
-                    await _context.SaveChangesAsync();
+                    _appDb.Update(affirmation);
+                    await _appDb.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -144,7 +146,7 @@ namespace AffirmationsApp.Controllers
                 return NotFound();
             }
 
-            var affirmation = await _context.Affirmation
+            var affirmation = await _appDb.Affirmation
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (affirmation == null)
             {
@@ -159,19 +161,19 @@ namespace AffirmationsApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var affirmation = await _context.Affirmation.FindAsync(id);
+            var affirmation = await _appDb.Affirmation.FindAsync(id);
             if (affirmation != null)
             {
-                _context.Affirmation.Remove(affirmation);
+                _appDb.Affirmation.Remove(affirmation);
             }
 
-            await _context.SaveChangesAsync();
+            await _appDb.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool AffirmationExists(int id)
         {
-            return _context.Affirmation.Any(e => e.Id == id);
+            return _appDb.Affirmation.Any(e => e.Id == id);
         }
     }
 }
