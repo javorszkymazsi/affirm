@@ -9,5 +9,13 @@ namespace AffirmationsApp.Areas.Identity.Data;
 // Add profile data for application users by adding properties to the AffirmationsAppUser class
 public class AffirmationsAppUser : IdentityUser
 {
+    public string LastName { get; set; }
+    public string FirstName { get; set; }
+    public string PhotoURL { get; set; }
+
+    public AffirmationsAppUser()
+    {
+        
+    }
 }
 

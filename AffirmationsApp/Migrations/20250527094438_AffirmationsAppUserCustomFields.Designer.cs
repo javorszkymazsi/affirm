@@ -4,6 +4,7 @@ using AffirmationsApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AffirmationsApp.Migrations
 {
     [DbContext(typeof(AffirmationsAppContext))]
-    partial class AffirmationsAppContextModelSnapshot : ModelSnapshot
+    [Migration("20250527094438_AffirmationsAppUserCustomFields")]
+    partial class AffirmationsAppUserCustomFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
