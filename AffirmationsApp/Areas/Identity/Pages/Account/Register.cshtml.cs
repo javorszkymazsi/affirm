@@ -107,8 +107,8 @@ namespace AffirmationsApp.Areas.Identity.Pages.Account
             [Display(Name = "Provide your last name")]
             public string LastName { get; set; }
 
-            [Display(Name = "Upload a profile picture")]
-            public string PhotoURL { get; set; }
+            [Display(Name = "Profile Photo")]
+            public IFormFile? Photo { get; set; }
         }
 
 
@@ -132,7 +132,28 @@ namespace AffirmationsApp.Areas.Identity.Pages.Account
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
                 // TODO: add photo option on form and turn this into an information processing part
-                user.PhotoURL = Input.PhotoURL == null ? "" : Input.PhotoURL; // Optional, can be null at this point
+                //user.PhotoURL = Input.Photo == null ? "" : Input.PhotoURL; // Optional, can be null at this point
+
+                // Handle photo upload
+                if (Input.Photo != null && Input.Photo.Length > 0)
+                {
+                    var uploadsFolder = Path.Combine("wwwroot", "images", "profiles");
+                    Directory.CreateDirectory(uploadsFolder); // Ensure folder exists
+                    var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(Input.Photo.FileName);
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await Input.Photo.CopyToAsync(fileStream);
+                    }
+
+                    // Store the relative path or URL
+                    user.PhotoURL = "/images/profiles/" + uniqueFileName;
+                }
+                else
+                {
+                    user.PhotoURL = ""; // Or a default image path
+                }
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 

@@ -32,6 +32,8 @@ namespace AffirmationsApp.Areas.Identity.Pages.Account.Manage
         /// </summary>
         public string Username { get; set; }
 
+        public string PhotoURL { get; set; }
+
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
@@ -81,6 +83,8 @@ namespace AffirmationsApp.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
+
+            PhotoURL = user.PhotoURL;
 
             await LoadAsync(user);
             return Page();
